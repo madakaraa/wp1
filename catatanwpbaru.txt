@@ -1,0 +1,138 @@
+Langkah pertama saat mulai instalasi wp
+
+apt update
+
+apt install php php-mysql mysql-server dnsutils bind9 resolvconf apache2 -y
+
+systemctl enable apache2
+
+systemctl start apache2
+
+cd /etc/bind
+
+cp db.local ukk-satria.net  //tambahkan nomer meja setelah ukk- //
+cp db.127 ukk-satria.net.reverse
+
+nano ukk-satria.net
+
+---------------------------------------------------------
+;
+; BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     ukk-satria.net. root.ukk-satria.net. (
+                              2         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      ukk-satria.net.
+@       IN      A       192.168.100.61
+www     IN      A       192.168.100.61
+---------------------------------------------------------
+
+nano ukk-satria.reverse
+
+---------------------------------------------------------
+;
+; BIND reverse data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     ukk-satria.net root.ukk-satria.net. (
+                              1         ; Serial
+                         604800         ; Refresh
+                          86400         ; Retry
+                        2419200         ; Expire
+                         604800 )       ; Negative Cache TTL
+;
+@       IN      NS      ukk-satria.net.
+61      IN      PTR     ukk-satria.net.
+61      IN      PTR     www.ukk-satria.net.
+---------------------------------------------------------
+
+nano named.conf.local
+
+---------------------------------------------------------
+//
+// Do any local configuration here
+//
+
+// Consider adding the 1918 zones here, if they are not used in your
+// organization
+//include "/etc/bind/zones.rfc1918";
+
+zone "ukk-satria.net" {
+        type master;
+        file "/etc/bind/ukk-satria.net";
+};
+
+// Reverse Zone
+
+zone "100.168.192.in-addr.arpa" {       //dibalik ip nya
+        type master;
+        file "/etc/bind/ukk-satria.net.reverse";
+};
+---------------------------------------------------------
+
+/etc/init.d/named restart
+
+systemctl restart apache2
+
+// cek google ip nya, apakah muncul apache2 nya atau tidak//
+
+/etc/resolv.conf
+
+---------------------------------------------------------
+nameserver 192.168.100.61
+nameserver 8.8.8.8
+search ukk-satria.net
+---------------------------------------------------------
+
+nslookup ukk-satria.net
+
+nslookup www.ukk-satria.net
+
+nslookup 192.168.100.61    // ip kamu //
+
+mysql -u root
+
+create database wordpress;
+
+create user 'satria'@'localhost' identified by 'satria';
+
+grant all privileges on wordpress.* to 'satria'@'localhost';
+
+flush privileges;
+
+exit;
+
+lalu ke setting windows change adapter option nya
+
+ipv4 dns ke ip kalian //192.168.100.61//
+
+cd /var/www/
+
+wget https://wordpress.org/latest.tar.gz
+
+tar -xf latest.tar.gz
+
+cd /etc/apache2/sites-available
+
+ls
+
+nano 000-default.conf
+
+
+	ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wordpress //diganti wordpress//
+
+
+cd /var/www/
+
+chown -R www-data:www-data wordpress/
+chmod -R 755 wordpress/
+
+
+systemctl restart apache2
+

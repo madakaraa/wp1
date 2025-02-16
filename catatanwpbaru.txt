@@ -135,3 +135,17 @@ chmod -R 755 wordpress/
 
 systemctl restart apache2
 
+
+
+// Jika terjadi database ga kebaca
+
+cd wordpress/
+
+cp -R wp-config-sample.php wp-config.php
+
+nano wp-config.php
+
+
+ganti username pass 
+
+systemctl restart apache2

@@ -1,6 +1,6 @@
-1. Gunakan UPS sebagai cadangan daya, pasang stabilizer untuk menstabilkan tegangan, dan lakukan backup data secara rutin untuk melindungi komputer dari kerusakan akibat listrik yang tidak stabil.
+1. Gunakan UPS (Uninterruptible Power Supply) sebagai cadangan daya, pasang stabilizer untuk menstabilkan tegangan, dan lakukan backup data secara rutin untuk melindungi komputer dari kerusakan akibat listrik yang tidak stabil.
 2. Hardware utama server meliputi CPU (pemrosesan), RAM (penyimpanan sementara), HDD/SSD (penyimpanan permanen), motherboard (penghubung komponen), PSU (sumber daya), NIC (koneksi jaringan), cooling system (pendingin), chassis (casing pelindung), serta RAID controller dan GPU (opsional).
-3. Gunakan perintah cat /etc/os-release untuk melihat versi OS atau uname -r untuk melihat versi kernel.
+3. Gunakan perintah cat /etc/os-release untuk melihat versi OS atau uname -r untuk melihat versi kernel dan windows + r = dxdiag untuk cek os windows
 4. Jika kipas heatsink tidak berputar saat komputer menyala, segera perbaiki untuk mencegah overheat, penurunan performa, dan kerusakan hardware.
 5. IPMI adalah standar manajemen server jarak jauh yang dijalankan oleh BMC (chip di motherboard). Contoh implementasinya: iDRAC (Dell), iLO (HPE), dan IPMItool (command-line universal).
 6. Sistem operasi open-source adalah OS yang kode sumbernya tersedia untuk umum, dapat digunakan, dimodifikasi, dan didistribusikan secara bebas.
@@ -10,8 +10,21 @@
 10. Backup VM di Proxmox: Masuk ke web interface, pilih VM, buka tab Backup, klik Backup Now, pilih storage tujuan dan mode backup (Snapshot/Stop), lalu jalankan proses hingga selesai.
 
 software
-1.nginx = sebagai webserver
-2.mariaDB = data base
+1.apache2 = sebagai webserver
+2.mysql = data base
 3.wordpress = mengelola website dan blog
 4.ubuntu = sebagai sistem operasi
 5.proxmox = mengelola server virtual
+
+hardware
+cpu, motherboard, ram, NIC 'Network Interface Card' (Kartu Jaringan) HDD, Power Supply
+
+- apt update
+Perintah apt update di Ubuntu digunakan untuk memperbarui daftar paket dari repositori yang tersedia. Ini tidak menginstal atau memperbarui paket, tetapi hanya menyegarkan informasi tentang versi terbaru dari paket yang tersedia di server repositori.
+
+Biasanya, ini dilakukan sebelum menjalankan apt upgrade agar sistem mengetahui versi terbaru dari perangkat lunak yang dapat diinstal atau diperbarui.
+
+- NTP
+NTP (Network Time Protocol) pada iDRAC (Integrated Dell Remote Access Controller) digunakan untuk menyinkronkan waktu sistem iDRAC dengan server waktu eksternal. Ini memastikan bahwa log, kejadian, dan tugas yang dijadwalkan memiliki waktu yang akurat.  
+
+Anda dapat mengonfigurasi NTP di iDRAC melalui antarmuka web atau CLI dengan menentukan server NTP yang dapat diandalkan.
